@@ -1,14 +1,31 @@
 geckobrowser
 ============
 
-Very basic Android browser application that uses the GeckoView widget
+Very basic Android browser application that uses the GeckoView widget.
 
-Prerequistes
-------------
+This is a fork of [GeckoBrowser](https://github.com/mfinkle/geckobrowser) that
+uses `make` and `ant` to download the dependencies, setup the Android projects,
+build and install the GeckoBrowser app.
 
-1. Download and unzip the GeckoView assets and libraries for ARMv7 from [here](http://ftp.mozilla.org/pub/mozilla.org/mobile/nightly/latest-mozilla-central-android/). You want the geckoview_library.zip and geckoview_assets.zip files. Other platforms are available as well: [ARMv6](http://ftp.mozilla.org/pub/mozilla.org/mobile/nightly/latest-mozilla-central-android-armv6/) and [x86](http://ftp.mozilla.org/pub/mozilla.org/mobile/nightly/latest-mozilla-central-android-x86/)
-2. Open Eclipse
-3. Import the geckoview_library project into the workspace using File > Import
-4. Import the geckobrowser application into the workspace using File > Import
-5. Add the Android Support (v4) library to the geckobrowser application by using Right-Click > Android Tools > Add Support Library
-6. Copy the assets to the geckobrowser "assets" folder
+Build Instructions
+------------------
+
+Follow the [prerequisites to build Fennec](https://wiki.mozilla.org/Mobile/Fennec/Android), so that you have an Android development environnement compatible
+with Gecko's requirements. Be sure to have `ant` and `android` in your `PATH`
+and set the `ANDROID_SDK` variable to the path of your android sdk.
+
+You need classical dependencies installed by default and/or available from the
+package manager of Linux/Mac/Cygwin:
+[coreutils](https://www.gnu.org/software/coreutils/),
+[make](https://www.gnu.org/software/make/),
+[unzip](http://www.info-zip.org/UnZip.html),
+[wget](https://www.gnu.org/software/wget/) and
+[ant](http://ant.apache.org/).
+
+Now, just follow the standard procedure:
+
+      ./configure
+      make all
+      make install # This assumes that you have a simulator/device connected
+
+Use `make help` for more commands.

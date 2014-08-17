@@ -1,0 +1,60 @@
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+help:
+	@echo
+	@echo "make help"
+	@echo "  Display this help message"
+	@echo
+	@echo "make all"
+	@echo "  Build GeckoBrowser"
+	@echo
+	@echo "make install"
+	@echo "  Install GeckoBrowser-debug.apk"
+	@echo
+	@echo "clean"
+	@echo "  Remove all the generated source and binary files"
+	@echo
+	@echo "distclean"
+	@echo "  Remove all the untracked files"
+	@echo
+
+clean:
+	rm -rf assets bin build.xml geckoview_library gen libs local.properties
+
+distclean: clean
+	rm -rf Makefile autom4te.cache config.log config.status \
+	geckoview_assets.zip geckoview_library.zip \
+	project.properties
+
+install:
+	@ADB@ install -r bin/GeckoBrowser-debug.apk
+
+geckoview_assets.zip:
+	@WGET@ @GECKOVIEW_URI@/geckoview_assets.zip
+
+geckoview_library.zip:
+	@WGET@ @GECKOVIEW_URI@/geckoview_library.zip
+
+assets: geckoview_assets.zip
+	@UNZIP@ $<
+	touch $@
+
+geckoview_library: geckoview_library.zip
+	@UNZIP@ $<
+	@ANDROID@ update lib-project \
+		--target @ANDROID_TARGET_ID@ \
+		--path geckoview_library
+	touch $@
+
+libs:
+	mkdir -p $@
+	cp @ANDROID_SUPPORT_LIBRARY_JAR@ $@
+
+all: assets geckoview_library libs
+	@ANDROID@ update project \
+		--target @ANDROID_TARGET_ID@ \
+		--name GeckoBrowser \
+		--path .
+	@ANT@ debug
