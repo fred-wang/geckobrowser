@@ -13,6 +13,9 @@ help:
 	@echo "make install"
 	@echo "  Install GeckoBrowser-debug.apk"
 	@echo
+	@echo "make importLocal"
+	@echo "  Import the GeckoView library and assets from the Fennec objdir"
+	@echo
 	@echo "clean"
 	@echo "  Remove all the generated source and binary files"
 	@echo
@@ -38,15 +41,26 @@ geckoview_library.zip:
 	@WGET@ @GECKOVIEW_URI@/geckoview_library.zip
 
 assets: geckoview_assets.zip
+	rm -rf $@
 	@UNZIP@ $<
 	touch $@
 
 geckoview_library: geckoview_library.zip
+	rm -rf $@
 	@UNZIP@ $<
 	@ANDROID@ update lib-project \
 		--target @ANDROID_TARGET_ID@ \
 		--path geckoview_library
 	touch $@
+
+importLocal:
+	@if ! test -d "$$FENNEC_OBJDIR"; then \
+		echo "Fennec objdir not found. Did you set the \$$FENNEC_OBJDIR variable?"; \
+	else \
+		cp $$FENNEC_OBJDIR/dist/geckoview_library/geckoview_assets.zip .; \
+		cp $$FENNEC_OBJDIR/dist/geckoview_library/geckoview_library.zip .; \
+		echo "Local GeckoView library imported."; \
+	fi
 
 libs:
 	mkdir -p $@

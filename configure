@@ -584,18 +584,15 @@ PACKAGE_URL=''
 ac_unique_file="src/"
 ac_subst_vars='LTLIBOBJS
 LIBOBJS
-ZIP
 WGET
 UNZIP
-GREP
-GIT
 ANT
 ANDROID
 ADB
 GECKOVIEW_URI
 ANDROID_SUPPORT_LIBRARY_JAR
 ANDROID_TARGET_ID
-ANDROID_SDK
+ANDROID_HOME
 target_alias
 host_alias
 build_alias
@@ -1679,7 +1676,7 @@ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 ANDROID_TARGET_ID=android-19
 
-ANDROID_SUPPORT_LIBRARY_JAR=$ANDROID_SDK/extras/android/support/v4/android-support-v4.jar
+ANDROID_SUPPORT_LIBRARY_JAR=$ANDROID_HOME/extras/android/support/v4/android-support-v4.jar
 
 GECKOVIEW_URI=http://ftp.mozilla.org/pub/mozilla.org/mobile/nightly/latest-mozilla-central-android
 
@@ -1697,7 +1694,8 @@ else
   ac_cv_prog_ADB="$ADB" # Let the user override the test.
 else
 as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
+as_dummy="$PATH:$ANDROID_HOME/platform-tools"
+for as_dir in $as_dummy
 do
   IFS=$as_save_IFS
   test -z "$as_dir" && as_dir=.
@@ -1725,6 +1723,7 @@ fi
 
   test -n "$ADB" && break
 done
+test -n "$ADB" || ADB="adb"
 
 for ac_prog in android
 do
@@ -1739,7 +1738,8 @@ else
   ac_cv_prog_ANDROID="$ANDROID" # Let the user override the test.
 else
 as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
+as_dummy="$PATH:$ANDROID_HOME/tools"
+for as_dir in $as_dummy
 do
   IFS=$as_save_IFS
   test -z "$as_dir" && as_dir=.
@@ -1767,6 +1767,7 @@ fi
 
   test -n "$ANDROID" && break
 done
+test -n "$ANDROID" || ANDROID="android"
 
 for ac_prog in ant
 do
@@ -1808,90 +1809,6 @@ fi
 
 
   test -n "$ANT" && break
-done
-
-for ac_prog in git
-do
-  # Extract the first word of "$ac_prog", so it can be a program name with args.
-set dummy $ac_prog; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if ${ac_cv_prog_GIT+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  if test -n "$GIT"; then
-  ac_cv_prog_GIT="$GIT" # Let the user override the test.
-else
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_prog_GIT="$ac_prog"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-fi
-fi
-GIT=$ac_cv_prog_GIT
-if test -n "$GIT"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GIT" >&5
-$as_echo "$GIT" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-  test -n "$GIT" && break
-done
-
-for ac_prog in grep
-do
-  # Extract the first word of "$ac_prog", so it can be a program name with args.
-set dummy $ac_prog; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if ${ac_cv_prog_GREP+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  if test -n "$GREP"; then
-  ac_cv_prog_GREP="$GREP" # Let the user override the test.
-else
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_prog_GREP="$ac_prog"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
-
-fi
-fi
-GREP=$ac_cv_prog_GREP
-if test -n "$GREP"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $GREP" >&5
-$as_echo "$GREP" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-  test -n "$GREP" && break
 done
 
 for ac_prog in unzip
@@ -1978,52 +1895,10 @@ fi
   test -n "$WGET" && break
 done
 
-for ac_prog in zip
-do
-  # Extract the first word of "$ac_prog", so it can be a program name with args.
-set dummy $ac_prog; ac_word=$2
-{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
-$as_echo_n "checking for $ac_word... " >&6; }
-if ${ac_cv_prog_ZIP+:} false; then :
-  $as_echo_n "(cached) " >&6
-else
-  if test -n "$ZIP"; then
-  ac_cv_prog_ZIP="$ZIP" # Let the user override the test.
-else
-as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
-for as_dir in $PATH
-do
-  IFS=$as_save_IFS
-  test -z "$as_dir" && as_dir=.
-    for ac_exec_ext in '' $ac_executable_extensions; do
-  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
-    ac_cv_prog_ZIP="$ac_prog"
-    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
-    break 2
-  fi
-done
-  done
-IFS=$as_save_IFS
 
-fi
-fi
-ZIP=$ac_cv_prog_ZIP
-if test -n "$ZIP"; then
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ZIP" >&5
-$as_echo "$ZIP" >&6; }
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-fi
-
-
-  test -n "$ZIP" && break
-done
-
-
-if ! test -d "$ANDROID_SDK" ; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: \"Android SDK not found. Did you set the \$ANDROID_SDK variable?\"" >&5
-$as_echo "$as_me: WARNING: \"Android SDK not found. Did you set the \$ANDROID_SDK variable?\"" >&2;}
+if ! test -d "$ANDROID_HOME" ; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: \"Android SDK not found. Did you set the \$ANDROID_HOME variable?\"" >&5
+$as_echo "$as_me: WARNING: \"Android SDK not found. Did you set the \$ANDROID_HOME variable?\"" >&2;}
 else
     if ! test -f "$ANDROID_SUPPORT_LIBRARY_JAR" ; then
        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: \"Android Support Library (version 4) not found.\"" >&5

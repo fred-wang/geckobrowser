@@ -11,8 +11,8 @@ Build Instructions
 ------------------
 
 Follow the [prerequisites to build Fennec](https://wiki.mozilla.org/Mobile/Fennec/Android), so that you have an Android development environnement compatible
-with Gecko's requirements. Be sure to have `ant` and `android` in your `PATH`
-and set the `ANDROID_SDK` variable to the path of your android sdk.
+with Gecko's requirements. Be sure to set the `ANDROID_HOME` variable to the
+path of your android sdk.
 
 You need classical dependencies installed by default and/or available from the
 package manager of Linux/Mac/Cygwin:
@@ -28,4 +28,12 @@ Now, just follow the standard procedure:
       make all
       make install # This assumes that you have a simulator/device connected
 
-Use `make help` for more commands.
+By default, the `geckoview_assets.zip` and `geckoview_library.zip` files will
+be downloaded from the official mozilla-central nightly builds. If you wish to
+use your own local builds, you can use the convenient command
+
+      make importLocal FENNEC_OBJDIR=/path/to/fennec/objdir
+
+to import the zip archives.
+
+Try `make help` for more commands.
